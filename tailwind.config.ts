@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,16 +10,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#ffffff",
-        foreground: "#111111",
-        muted: "#f8f8f8",
-        "muted-foreground": "#666666",
-        border: "#e5e5e5",
-        accent: "#2563eb",
+        bg: "rgb(var(--bg) / <alpha-value>)",
+        surface: "rgb(var(--surface) / <alpha-value>)",
+        "surface-2": "rgb(var(--surface-2) / <alpha-value>)",
+        border: "rgb(var(--border) / <alpha-value>)",
+        fg: "rgb(var(--fg) / <alpha-value>)",
+        "fg-muted": "rgb(var(--fg-muted) / <alpha-value>)",
+        "fg-subtle": "rgb(var(--fg-subtle) / <alpha-value>)",
+        accent: "rgb(var(--accent) / <alpha-value>)",
+        "accent-fg": "rgb(var(--accent-fg) / <alpha-value>)",
       },
       fontFamily: {
-        sans: ["var(--font-noto-sans-jp)", "var(--font-inter)", "sans-serif"],
-        inter: ["var(--font-inter)", "sans-serif"],
+        sans: ["var(--font-sans-en)", "var(--font-sans-jp)", "sans-serif"],
+        mono: ["var(--font-mono)", "monospace"],
       },
     },
   },

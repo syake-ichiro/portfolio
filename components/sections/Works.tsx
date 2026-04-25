@@ -1,113 +1,100 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
 import { works } from "@/lib/works";
+import { Reveal } from "@/components/ui/Reveal";
+import { cn } from "@/lib/utils";
 
-function FadeIn({
-  children,
-  delay = 0,
-}: {
-  children: React.ReactNode;
-  delay?: number;
-}) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+function StatusBadge({ status }: { status: "live" | "wip" }) {
+  if (status === "live") {
+    return (
+      <span
+        className={cn(
+          "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium",
+          "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20"
+        )}
+      >
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+        Live
+      </span>
+    );
+  }
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay }}
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium",
+        "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20"
+      )}
     >
-      {children}
-    </motion.div>
+      Coming Soon
+    </span>
   );
 }
 
 export default function Works() {
   return (
-    <section id="works" className="py-24 bg-[#f8f8f8]">
-      <div className="max-w-5xl mx-auto px-6">
-        <FadeIn>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#111111] mb-12 text-center">
-            Works
-          </h2>
-        </FadeIn>
+    <section id="works" className="py-24 md:py-32 border-t border-border">
+      <div className="max-w-6xl mx-auto px-6 md:px-8 space-y-12">
+        <Reveal>
+          <div className="space-y-3">
+            <p className="text-sm uppercase tracking-widest text-fg-muted font-medium">
+              Works
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-fg">
+              制作物
+            </h2>
+            <p className="text-base text-fg-muted">
+              個人開発プロダクト。順次公開予定です。
+            </p>
+          </div>
+        </Reveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {works.map((work, i) => (
-            <FadeIn key={work.id} delay={0.1 * (i + 1)}>
-              <div className="bg-white border border-[#e5e5e5] rounded-xl overflow-hidden shadow-sm flex flex-col h-full">
-                {/* 画像プレースホルダー */}
-                <div className="h-44 bg-[#f0f4ff] flex items-center justify-center border-b border-[#e5e5e5] relative">
-                  {work.status === "wip" && (
-                    <span className="absolute top-3 right-3 text-xs font-inter bg-[#f8f8f8] border border-[#e5e5e5] text-[#666666] px-2 py-0.5 rounded-full">
-                      制作予定
-                    </span>
+            <Reveal key={work.id} delay={i * 0.08}>
+              <article
+                className={cn(
+                  "group flex flex-col bg-surface border border-border rounded-2xl overflow-hidden",
+                  "hover:-translate-y-1 hover:shadow-xl hover:border-border/80",
+                  "transition-all duration-300"
+                )}
+              >
+                {/* Visual */}
+                <div
+                  className={cn(
+                    "relative aspect-[4/3] flex items-center justify-center",
+                    `bg-gradient-to-br ${work.gradient}`,
+                    "group-hover:scale-[1.02] transition-transform duration-500"
                   )}
-                  <span className="text-4xl">
-                    {work.id === "saas-manager"
-                      ? "📊"
-                      : work.id === "info-recommend"
-                      ? "🤖"
-                      : "💰"}
+                >
+                  <span className="text-5xl" role="img" aria-label={work.title}>
+                    {work.emoji}
                   </span>
+                  <div className="absolute top-3 right-3">
+                    <StatusBadge status={work.status} />
+                  </div>
                 </div>
 
-                <div className="p-5 flex flex-col flex-1">
-                  <h3 className="font-bold text-[#111111] mb-2">{work.title}</h3>
-                  <p className="text-sm text-[#666666] leading-relaxed mb-4 flex-1">
+                {/* Content */}
+                <div className="flex flex-col flex-1 p-5 gap-3">
+                  <h3 className="text-lg font-semibold text-fg leading-tight">
+                    {work.title}
+                  </h3>
+                  <p className="text-sm text-fg-muted leading-relaxed flex-1">
                     {work.description}
                   </p>
-
-                  {/* 技術バッジ */}
-                  <div className="flex flex-wrap gap-1.5 mb-4">
+                  <div className="flex flex-wrap gap-1.5">
                     {work.techs.map((tech) => (
                       <span
                         key={tech}
-                        className="text-xs bg-[#f0f4ff] text-[#2563eb] border border-blue-100 px-2 py-0.5 rounded-full font-inter"
+                        className="font-mono text-xs bg-surface-2 border border-border text-fg-muted px-2 py-0.5 rounded-md"
                       >
                         {tech}
                       </span>
                     ))}
                   </div>
-
-                  {/* リンクボタン */}
-                  <div className="flex gap-2">
-                    {work.demoUrl ? (
-                      <a
-                        href={work.demoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 text-center text-sm font-inter bg-[#2563eb] text-white px-3 py-2 rounded-md hover:bg-blue-700 transition-colors"
-                      >
-                        デモを見る
-                      </a>
-                    ) : (
-                      <span className="flex-1 text-center text-sm font-inter bg-[#f8f8f8] text-[#999] px-3 py-2 rounded-md border border-[#e5e5e5] cursor-not-allowed">
-                        準備中
-                      </span>
-                    )}
-                    {work.githubUrl ? (
-                      <a
-                        href={work.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 text-center text-sm font-inter border border-[#e5e5e5] text-[#111111] px-3 py-2 rounded-md hover:border-[#2563eb] hover:text-[#2563eb] transition-colors"
-                      >
-                        GitHub
-                      </a>
-                    ) : (
-                      <span className="flex-1 text-center text-sm font-inter bg-[#f8f8f8] text-[#999] px-3 py-2 rounded-md border border-[#e5e5e5] cursor-not-allowed">
-                        準備中
-                      </span>
-                    )}
-                  </div>
                 </div>
-              </div>
-            </FadeIn>
+              </article>
+            </Reveal>
           ))}
         </div>
       </div>

@@ -1,26 +1,35 @@
 import type { Metadata } from "next";
-import { Inter, Noto_Sans_JP } from "next/font/google";
+import { Inter, JetBrains_Mono, Noto_Sans_JP } from "next/font/google";
+import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-sans-en",
   display: "swap",
 });
 
-const notoSansJP = Noto_Sans_JP({
+const noto = Noto_Sans_JP({
   subsets: ["latin"],
-  variable: "--font-noto-sans-jp",
+  weight: ["400", "500", "700"],
+  variable: "--font-sans-jp",
+  display: "swap",
+});
+
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "syake-ichiro | フルスタックエンジニア",
   description:
-    "業務効率化・Webアプリ開発を得意とするフルスタックエンジニアのポートフォリオ。個人・スタートアップ向けの副業案件を受け付けています。",
+    "通信大手で4年間、ミッションクリティカルなシステム開発に従事。業務自動化・効率化を得意とするフルスタックエンジニアです。",
   openGraph: {
     title: "syake-ichiro | フルスタックエンジニア",
-    description: "業務効率化・Webアプリ開発を得意とするフルスタックエンジニア",
+    description:
+      "通信大手で4年間、ミッションクリティカルなシステム開発に従事。業務自動化・効率化を得意とするフルスタックエンジニアです。",
     type: "website",
   },
 };
@@ -31,8 +40,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={`${inter.variable} ${notoSansJP.variable}`}>
-      <body className="antialiased font-sans">{children}</body>
+    <html
+      lang="ja"
+      className={`${inter.variable} ${noto.variable} ${mono.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="antialiased font-sans">
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }
