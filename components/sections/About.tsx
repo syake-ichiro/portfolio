@@ -65,7 +65,7 @@ export default function About() {
               {profile.meta}
             </p>
             <h3 className="text-[32px] font-bold leading-[1.2] tracking-[-0.02em] mb-6">
-              Hello, I&apos;m {profile.name}.
+              {profile.name}
             </h3>
             <p className="text-[var(--text-mute)] text-[15px] leading-[1.9] mb-8">
               {profile.bio}

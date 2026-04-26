@@ -1,5 +1,32 @@
+import type { IconType } from "react-icons";
+import {
+  SiHtml5, SiJavascript, SiTypescript, SiAngular, SiNextdotjs,
+  SiPython, SiNodedotjs,
+  SiPostgresql, SiDocker, SiLinux,
+  SiGit, SiFigma, SiSlack, SiNotion, SiPostman,
+} from "react-icons/si";
+import { FaJava } from "react-icons/fa";
 import { Reveal } from "@/components/ui/Reveal";
 import { skills } from "@/lib/data";
+
+const techIcons: Record<string, { Icon: IconType; color: string }> = {
+  "HTML / CSS":      { Icon: SiHtml5,      color: "#E34F26" },
+  "JavaScript":      { Icon: SiJavascript, color: "#F7DF1E" },
+  "TypeScript":      { Icon: SiTypescript, color: "#3178C6" },
+  "Angular":         { Icon: SiAngular,    color: "#DD0031" },
+  "Next.js":         { Icon: SiNextdotjs,  color: "#000000" },
+  "Python / Django": { Icon: SiPython,     color: "#3776AB" },
+  "Java":            { Icon: FaJava,       color: "#007396" },
+  "Node.js":         { Icon: SiNodedotjs,  color: "#339933" },
+  "PostgreSQL":      { Icon: SiPostgresql, color: "#4169E1" },
+  "Docker":          { Icon: SiDocker,     color: "#2496ED" },
+  "Linux":           { Icon: SiLinux,      color: "#FCC624" },
+  "Git / GitHub":    { Icon: SiGit,        color: "#F05032" },
+  "Figma":           { Icon: SiFigma,      color: "#F24E1E" },
+  "Slack":           { Icon: SiSlack,      color: "#4A154B" },
+  "Notion":          { Icon: SiNotion,     color: "#000000" },
+  "Postman":         { Icon: SiPostman,    color: "#FF6C37" },
+};
 
 const iconColors = [
   "bg-[var(--accent-coral)] text-white",
@@ -50,19 +77,29 @@ export default function Skills() {
               </div>
 
               <div className="flex flex-wrap gap-2">
-                {category.skills.map((skill) => (
-                  <span
-                    key={skill.name}
-                    className="skill-tag inline-flex items-center gap-[6px] px-[14px] py-2 bg-[var(--bg)] border border-[var(--border)] rounded-full text-[13px] text-[var(--text)] font-medium"
-                  >
-                    {skill.name}
-                    {skill.level && (
-                      <span className="text-[11px] text-[var(--text-soft)]">
-                        / {skill.level}
-                      </span>
-                    )}
-                  </span>
-                ))}
+                {category.skills.map((skill) => {
+                  const tech = techIcons[skill.name];
+                  return (
+                    <span
+                      key={skill.name}
+                      className="skill-tag inline-flex items-center gap-[6px] px-[14px] py-2 bg-[var(--bg)] border border-[var(--border)] rounded-full text-[13px] text-[var(--text)] font-medium"
+                    >
+                      {tech && (
+                        <tech.Icon
+                          style={{ color: tech.color }}
+                          className="w-[14px] h-[14px] flex-shrink-0"
+                          aria-hidden
+                        />
+                      )}
+                      {skill.name}
+                      {skill.level && (
+                        <span className="text-[11px] text-[var(--text-soft)]">
+                          / {skill.level}
+                        </span>
+                      )}
+                    </span>
+                  );
+                })}
               </div>
             </div>
           ))}

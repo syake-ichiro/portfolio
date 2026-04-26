@@ -34,7 +34,7 @@ export type ArchiveProject = {
 export type Social = {
   label: string;
   href: string;
-  icon: "x" | "github" | "linkedin" | "note";
+  icon: "x" | "github" | "zenn";
 };
 
 // ---- Profile ----
@@ -43,9 +43,9 @@ export const profile = {
   name: "syake-ichiro",
   bio: `通信会社でエンジニアとして4年間勤務。業務システムの開発・保守を担当し、Django・Angular・Java を中心にバックエンドからフロントエンドまで幅広く携わってきました。現在は Next.js などモダンな技術スタックを学びながら、副業エンジニアとして自分のプロダクトを育てています。丁寧に、一つずつ。`,
   facts: [
-    { num: "4+", label: "Years of experience" },
-    { num: "10+", label: "Projects shipped" },
-    { num: "∞", label: "Cups of coffee" },
+    { num: "4+", label: "年の実務経験" },
+    { num: "10+", label: "個のプロジェクト" },
+    { num: "∞", label: "杯のコーヒー" },
   ],
 };
 
@@ -99,20 +99,20 @@ export const featuredProjects: FeaturedProject[] = [
   {
     year: "2025",
     category: "Personal",
-    title: "Portfolio site",
+    title: "SaaS 管理アプリ",
     description:
-      "自分用のポートフォリオサイト。Next.js + Tailwind でデザインから実装まで一人で担当。",
-    stack: ["Next.js", "TypeScript", "Tailwind"],
+      "契約中のSaaSを一覧管理し、月額費用・利用状況を可視化するツール。コスト最適化を支援します。",
+    stack: ["Next.js", "Supabase", "Recharts", "Tailwind"],
     link: "#",
     gradient: "linear-gradient(135deg, #B8C8DC, #B0CDB8)",
   },
   {
-    year: "2024",
-    category: "Work",
-    title: "業務自動化ツール",
+    year: "2025",
+    category: "Personal",
+    title: "ペット健康管理アプリ",
     description:
-      "社内の定型作業を Django で自動化したツール。処理時間を 80% 削減。",
-    stack: ["Python", "Django", "Oracle DB"],
+      "ペットの体重・食事・ワクチン接種記録を管理するアプリ。愛犬・愛猫の健康をサポートします。",
+    stack: ["Next.js", "Supabase", "TypeScript"],
     link: "#",
     gradient: "linear-gradient(135deg, #E8B4A0, #EBD9A8)",
   },
@@ -121,55 +121,33 @@ export const featuredProjects: FeaturedProject[] = [
 // ---- Archive Projects (全件リスト) ----
 export const archiveProjects: ArchiveProject[] = [
   {
-    year: "2024",
-    name: "SaaS 管理アプリ",
-    description: "契約中のSaaSを一覧管理し、月額費用・利用状況を可視化するツール。",
-    tech: ["Next.js", "Supabase", "Recharts"],
-    link: "#",
-  },
-  {
-    year: "2024",
-    name: "情報レコメンドアプリ",
-    description: "興味・学習進捗に応じて必要な情報を自動収集・要約するAIツール。",
-    tech: ["Next.js", "Claude API", "Supabase"],
-    link: "#",
-  },
-  {
-    year: "2023",
-    name: "Angular ダッシュボード",
-    description: "社内向けデータ可視化ダッシュボード。BI的な機能を社内で内製化。",
-    tech: ["Angular", "TypeScript", "Django"],
-    link: "#",
-  },
-  {
-    year: "2023",
+    year: "2025",
     name: "資産管理アプリ",
     description: "銀行・証券のCSVを取り込み、資産・収支をグラフで可視化するツール。",
     tech: ["Next.js", "Supabase", "Recharts"],
     link: "#",
   },
   {
-    year: "2022",
-    name: "Slack 通知ボット",
-    description: "定期的にチームへ進捗を投げる軽量ボット。",
-    tech: ["Node.js", "Slack API"],
+    year: "2025",
+    name: "情報レコメンドアプリ",
+    description: "興味・学習進捗に応じて必要な情報を自動収集・要約するAIツール。",
+    tech: ["Next.js", "Claude API", "Supabase"],
     link: "#",
   },
   {
-    year: "2022",
-    name: "CSS animation studies",
-    description: "CodePen で公開した小さなアニメーション集。",
-    tech: ["HTML", "CSS"],
+    year: "2024",
+    name: "メール自動送信ツール",
+    description: "定型メールを自動生成・送信するツール。業務の定期連絡を効率化。",
+    tech: ["Python", "Gmail API"],
     link: "#",
   },
 ];
 
 // ---- Social Links ----
 export const socials: Social[] = [
-  { label: "X / Twitter", href: "#", icon: "x" },
+  { label: "X / Twitter", href: "https://x.com/syake_ichiro", icon: "x" },
   { label: "GitHub", href: "https://github.com/syake-ichiro", icon: "github" },
-  { label: "LinkedIn", href: "#", icon: "linkedin" },
-  { label: "Note", href: "#", icon: "note" },
+  { label: "Zenn", href: "https://zenn.dev/syake_ichiro", icon: "zenn" },
 ];
 
 export const contactEmail = "syake.ichiro@gmail.com";
