@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Name — Portfolio Mockup</title>
+
+<!--
+  ============================================================
+  FONTS / 書体について
+  ============================================================
+  既存ポートフォリオの書体をそのまま使ってOK。
+  下記の `--font-sans` を、お使いの書体（Webフォントの読み込み行 + フォント名）
+  に差し替えるだけで全体に反映されます。
+  例：
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+    --font-sans: 'Noto Sans JP', ...;
+
+  デフォルトでは、現状もっとも一般的な日本語サイトのシステムフォントスタックを
+  暫定的に当てています。
+-->
+<style>
+  :root {
+    /* === FONT (差し替え可能) === */
+    --font-sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+                 "ヒラギノ角ゴ ProN W3", "Noto Sans JP", "Yu Gothic Medium",
+                 "游ゴシック Medium", YuGothic, "Meiryo", sans-serif;
+
+    /* === COLORS (パステル系・落ち着いた明るさ) === */
+    --bg:        #FAF7F2;
+    --surface:   #FFFFFF;
+    --surface-2: #F3EEE6;
+    --border:    #EAE2D6;
+    --text:      #2C2A28;
+    --text-mute: #8A857F;
+    --text-soft: #B8B2A8;
+
+    --accent-coral: #E8B4A0;
+    --accent-sage:  #B0CDB8;
+    --accent-sky:   #B8C8DC;
+    --accent-butter:#EBD9A8;
+
+    --shadow-md: 0 4px 12px rgba(44,42,40,.06), 0 2px 4px rgba(44,42,40,.04);
+    --shadow-lg: 0 20px 40px rgba(44,42,40,.08);
+
+    --r-md: 16px;
+    --r-lg: 24px;
+    --r-xl: 32px;
+
+    --max: 1120px;
+    --gutter: 24px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  /* ===== NAV ===== */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    backdrop-filter: blur(16px);
+    background: rgba(10,10,12,.35); /* ヒーロー上では暗背景に馴染ませる */
+    transition: background .3s, border-color .3s;
+    border-bottom: 1px solid transparent;
+  }
+  .nav.scrolled {
+    background: rgba(250,247,242,.85);
+    border-color: var(--border);
+  }
+  .nav-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 16px var(--gutter);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 16px;
+    letter-spacing: .02em;
+    color: #fff;
+    transition: color .3s;
+  }
+  .nav.scrolled .nav-logo { color: var(--text); }
+  .nav-logo .dot { color: var(--accent-coral); font-style: normal; }
+  /* Faviconスロット：./assets/favicon.svg(or .png) を配置すれば自動で読み込まれる */
+  .nav-favicon {
+    width: 28px; height: 28px;
+    border-radius: 6px;     /* 完全な円にしたければ 50% に */
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+  }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    font-size: 13px; font-weight: 500;
+    color: rgba(255,255,255,.75);
+    position: relative; transition: color .25s;
+  }
+  .nav.scrolled .nav-links a { color: var(--text-mute); }
+  .nav-links a:hover { color: #fff; }
+  .nav.scrolled .nav-links a:hover { color: var(--text); }
+  .nav-links a::after {
+    content: ""; position: absolute; bottom: -6px; left: 0;
+    width: 0; height: 2px; background: var(--accent-coral);
+    transition: width .25s ease;
+  }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* =====================================================
+     HERO (写真背景 + エモい仕上げ)
+     -----------------------------------------------------
+     ★ 写真の置き場所：./assets/desk.jpg
+        （HTML と同じ階層に assets フォルダを作って配置）
+     ★ ヒーローは多層レイヤー構造：
+        1) 写真本体（filterで彩度・コントラスト・明度を調整）
+        2) 上下のグラデーション（読みやすさ + 沈み）
+        3) ビネット（中央以外を落とす）
+        4) 青〜暖色のカラーグレード（mix-blend-mode: overlay）
+        5) フィルムグレイン（任意）
+        6) 上下のフィルムバー（シネマライク・任意）
+        7) テキスト
+  ===================================================== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    color: #F5EDE0;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  /* 1) 写真本体 */
+  .hero-photo {
+    position: absolute; inset: 0; z-index: 0;
+    background-image: url('./assets/desk.jpg');
+    background-size: cover;
+    background-position: center;
+    /* エモい色調：彩度を少し落とし、コントラストを上げ、暗くする */
+    filter: saturate(.85) contrast(1.1) brightness(.78);
+    transform: scale(1.05);              /* ビネット端を隠す保険 */
+    animation: heroZoom 18s ease-in-out infinite alternate; /* 静かなKen Burns */
+  }
+  @keyframes heroZoom {
+    from { transform: scale(1.05) translate(0,0); }
+    to   { transform: scale(1.12) translate(-1%, -1%); }
+  }
+  /* 2) 縦グラデーション（上下を沈める） */
+  .hero-grad {
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(180deg,
+      rgba(8,12,20,.55) 0%,
+      rgba(8,12,20,.10) 30%,
+      rgba(8,12,20,.35) 70%,
+      rgba(8,12,20,.85) 100%);
+  }
+  /* 3) ビネット */
+  .hero-vignette {
+    position: absolute; inset: 0; z-index: 2;
+    background: radial-gradient(ellipse at center,
+      transparent 40%, rgba(0,0,0,.55) 100%);
+    pointer-events: none;
+  }
+  /* 4) カラーグレード */
+  .hero-tint {
+    position: absolute; inset: 0; z-index: 3;
+    background: linear-gradient(135deg,
+      rgba(72,86,120,.18) 0%,
+      rgba(180,140,90,.12) 100%);
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  /* 5) グレイン（軽量SVGノイズ） */
+  .hero-grain {
+    position: absolute; inset: 0; z-index: 4;
+    opacity: .12; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/></svg>");
+  }
+  /* 6) フィルムバー（任意） */
+  .hero-bar { position: absolute; left: 0; right: 0; height: 36px; background: #050810; z-index: 5; }
+  .hero-bar.top    { top: 0; }
+  .hero-bar.bottom { bottom: 0; }
+
+  /* 7) テキスト */
+  .hero-inner {
+    position: relative; z-index: 10;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 140px var(--gutter) 120px;
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 12px; letter-spacing: .3em; text-transform: uppercase;
+    color: rgba(245,237,224,.75); margin-bottom: 24px;
+    font-weight: 500;
+  }
+  .hero-eyebrow .line {
+    display: inline-block; width: 32px; height: 1px;
+    background: rgba(245,237,224,.5);
+  }
+  .hero h1 {
+    font-size: clamp(56px, 9vw, 120px);
+    line-height: 1.0;
+    letter-spacing: -.03em;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+  .hero h1 .accent {
+    display: block;
+    font-size: clamp(20px, 2.4vw, 28px);
+    font-weight: 400;
+    color: rgba(245,237,224,.8);
+    letter-spacing: .02em;
+    margin-top: 16px;
+  }
+  .hero-tagline {
+    font-size: clamp(15px, 1.6vw, 17px);
+    color: rgba(245,237,224,.72);
+    max-width: 520px;
+    margin-bottom: 48px;
+    line-height: 1.8;
+  }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 28px;
+    border-radius: 100px;
+    font-weight: 600; font-size: 14px;
+    transition: transform .2s, background .2s;
+    cursor: pointer; border: none;
+  }
+  .btn-primary { background: #F5EDE0; color: #1a1612; }
+  .btn-primary:hover { transform: translateY(-2px); }
+  .btn-ghost {
+    background: transparent; color: #F5EDE0;
+    border: 1px solid rgba(245,237,224,.4);
+  }
+  .btn-ghost:hover { background: rgba(245,237,224,.1); }
+  .hero-scroll {
+    position: absolute; right: var(--gutter); bottom: 60px; z-index: 10;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 11px; letter-spacing: .25em; text-transform: uppercase;
+    color: rgba(245,237,224,.6);
+  }
+  .hero-scroll .v {
+    display: inline-block; width: 1px; height: 40px;
+    background: linear-gradient(180deg, rgba(245,237,224,.5), transparent);
+    animation: dropline 2.4s ease-in-out infinite;
+  }
+  @keyframes dropline {
+    0%   { transform: scaleY(0); transform-origin: top; }
+    50%  { transform: scaleY(1); transform-origin: top; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* ===== SECTION COMMON ===== */
+  section { padding: 120px var(--gutter); position: relative; }
+  .container { max-width: var(--max); margin: 0 auto; }
+  .section-head { text-align: center; margin-bottom: 80px; }
+  .section-num {
+    color: var(--accent-coral);
+    font-size: 12px; letter-spacing: .25em; text-transform: uppercase;
+    margin-bottom: 12px; display: block; font-weight: 600;
+  }
+  .section-title {
+    font-weight: 700;
+    font-size: clamp(32px, 4.5vw, 48px);
+    letter-spacing: -.02em;
+    line-height: 1.2;
+  }
+  .section-sub { color: var(--text-mute); margin-top: 16px; font-size: 15px; }
+
+  /* ===== PROFILE ===== */
+  #profile { background: var(--surface); }
+  .profile-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 64px; align-items: center; }
+  /* Profileアバター：円形（Geminiウォーターマークは四隅クリップで自動的に隠れる） */
+  .profile-visual {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    max-width: 340px; margin: 0 auto;
+    background: linear-gradient(135deg, var(--accent-coral) 0%, var(--accent-butter) 50%, var(--accent-sage) 100%);
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+  /* 円の外側に淡いリング（被写体を引き立てる装飾） */
+  .profile-visual::after {
+    content: ""; position: absolute; inset: -8px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    pointer-events: none;
+  }
+  /* 円の内側に細いリング（写真の上にうっすら乗る） */
+  .profile-visual::before {
+    content: ""; position: absolute; inset: 10px;
+    border: 1px solid rgba(255,255,255,.45);
+    border-radius: 50%;
+    z-index: 2; pointer-events: none;
+  }
+  .profile-visual img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+  /* 画像未配置時のフォールバック（イニシャル） */
+  .profile-visual .initial {
+    font-size: 160px;
+    color: rgba(255,255,255,.95);
+    font-weight: 700;
+    position: relative;
+    z-index: 0;
+  }
+  .profile-meta { font-size: 11px; color: var(--text-soft); text-transform: uppercase; letter-spacing: .2em; margin-bottom: 12px; }
+  .profile-name { font-size: 32px; font-weight: 700; line-height: 1.2; margin-bottom: 24px; letter-spacing: -.02em; }
+  .profile-bio { color: var(--text-mute); font-size: 15px; line-height: 1.9; margin-bottom: 32px; }
+  .profile-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding-top: 32px; border-top: 1px solid var(--border); }
+  .fact-num { font-size: 32px; font-weight: 700; color: var(--text); display: block; }
+  .fact-label { font-size: 12px; color: var(--text-mute); margin-top: 4px; }
+
+  /* ===== SKILLS ===== */
+  .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .skill-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-lg); padding: 32px;
+    transition: transform .25s, box-shadow .25s;
+  }
+  .skill-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+  .skill-card-head { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+  .skill-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--accent-coral); color: white; font-size: 18px;
+  }
+  .skill-card:nth-child(2) .skill-icon { background: var(--accent-sage); }
+  .skill-card:nth-child(3) .skill-icon { background: var(--accent-sky); }
+  .skill-card:nth-child(4) .skill-icon { background: var(--accent-butter); color: var(--text); }
+  .skill-card h3 { font-size: 20px; font-weight: 700; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .skill-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 100px; font-size: 13px; color: var(--text);
+    font-weight: 500; transition: all .2s;
+  }
+  .skill-tag:hover { border-color: var(--accent-coral); color: var(--accent-coral); transform: translateY(-1px); }
+  .skill-tag .level { color: var(--text-soft); font-size: 11px; }
+
+  /* ===== WORKS ===== */
+  #projects { background: var(--surface); }
+  .works-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .work-card {
+    border-radius: var(--r-lg); overflow: hidden;
+    background: var(--bg); border: 1px solid var(--border);
+    transition: transform .3s, box-shadow .3s; cursor: pointer;
+  }
+  .work-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+  .work-thumb {
+    aspect-ratio: 16/10;
+    background: linear-gradient(135deg, var(--accent-sky), var(--accent-sage));
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,.95);
+    font-size: 22px; font-weight: 700; letter-spacing: .02em;
+  }
+  .work-card:nth-child(2) .work-thumb { background: linear-gradient(135deg, var(--accent-coral), var(--accent-butter)); }
+  .work-card:nth-child(3) .work-thumb { background: linear-gradient(135deg, var(--accent-sage), var(--accent-sky)); }
+  .work-card:nth-child(4) .work-thumb { background: linear-gradient(135deg, var(--accent-butter), var(--accent-coral)); }
+  .work-body { padding: 24px 28px 28px; }
+  .work-meta { display: flex; gap: 8px; font-size: 11px; color: var(--text-mute); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .15em; }
+  .work-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; letter-spacing: -.01em; }
+  .work-desc { color: var(--text-mute); font-size: 14px; margin-bottom: 16px; }
+  .work-stack { display: flex; flex-wrap: wrap; gap: 6px; }
+  .work-stack span {
+    font-size: 11px; padding: 4px 10px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 100px; color: var(--text-mute);
+  }
+  .work-link { display: inline-flex; align-items: center; gap: 6px; color: var(--accent-coral); font-weight: 600; font-size: 13px; margin-top: 16px; }
+
+  /* ---- Featured grid (2 large cards) ---- */
+  .featured-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px;
+    margin-bottom: 100px;
+  }
+
+  /* ---- Archive list (compact rows, scales infinitely) ---- */
+  .archive-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0;
+  }
+  .archive-title {
+    font-size: 13px; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: var(--text);
+  }
+  .archive-count {
+    font-size: 12px; color: var(--text-mute);
+    letter-spacing: .1em; text-transform: uppercase;
+  }
+  .archive-list { list-style: none; padding: 0; margin: 0; }
+  .archive-row {
+    display: grid;
+    grid-template-columns: 72px 1fr auto 36px;
+    gap: 24px; align-items: center;
+    padding: 22px 12px;
+    border-bottom: 1px solid var(--border);
+    transition: background .25s, padding .25s;
+    cursor: pointer;
+    text-decoration: none; color: inherit;
+  }
+  .archive-row:hover { background: var(--bg); padding-left: 20px; }
+  .archive-year {
+    font-size: 13px; color: var(--text-mute);
+    font-variant-numeric: tabular-nums; letter-spacing: .05em;
+  }
+  .archive-name {
+    font-size: 17px; font-weight: 700;
+    color: var(--text); margin-bottom: 4px;
+    letter-spacing: -.01em;
+  }
+  .archive-desc {
+    font-size: 13px; color: var(--text-mute);
+    line-height: 1.5;
+  }
+  .archive-tech { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .archive-tech span {
+    font-size: 11px; padding: 4px 10px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 100px; color: var(--text-mute);
+    transition: all .2s;
+  }
+  .archive-row:hover .archive-tech span {
+    background: var(--surface); border-color: var(--text-soft);
+  }
+  .archive-link {
+    display: flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    color: var(--text-mute);
+    font-size: 14px; font-weight: 600;
+    transition: all .25s;
+  }
+  .archive-row:hover .archive-link {
+    background: var(--accent-coral);
+    border-color: var(--accent-coral);
+    color: white;
+    transform: translate(2px, -2px);
+  }
+  .archive-more {
+    text-align: center; margin-top: 40px;
+  }
+  .archive-more a {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 600;
+    color: var(--text-mute);
+    padding: 12px 24px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    transition: all .2s;
+  }
+  .archive-more a:hover {
+    color: var(--text); border-color: var(--text);
+  }
+
+  /* ===== CONTACT ===== */
+  #contact { padding: 160px var(--gutter); text-align: center; }
+  .contact-title {
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -.03em;
+    margin-bottom: 32px;
+  }
+  .contact-title em { font-style: normal; color: var(--accent-coral); }
+  .contact-sub { color: var(--text-mute); font-size: 16px; max-width: 480px; margin: 0 auto 48px; }
+  .contact-email {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 18px 36px;
+    background: var(--text); color: var(--bg);
+    border-radius: 100px;
+    font-weight: 600; font-size: 15px;
+    transition: transform .2s, box-shadow .2s;
+    margin-bottom: 56px;
+  }
+  .contact-email:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .socials { display: flex; gap: 16px; justify-content: center; }
+  .social {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    transition: all .25s; color: var(--text-mute);
+  }
+  .social:hover { background: var(--text); color: var(--bg); border-color: var(--text); transform: translateY(-3px); }
+  .social svg { width: 20px; height: 20px; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    padding: 32px var(--gutter); text-align: center;
+    color: var(--text-soft); font-size: 13px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .nav-links { gap: 18px; }
+    .nav-links a { font-size: 12px; }
+    .profile-grid, .skills-grid, .works-grid, .featured-grid { grid-template-columns: 1fr; gap: 32px; }
+    .fact-num { font-size: 26px; }
+    section { padding: 80px var(--gutter); }
+    .hero-bar { display: none; } /* モバイルではフィルムバー非表示 */
+    /* archive: モバイルは [year title] / [tech link] の2行構成 */
+    .archive-row {
+      grid-template-columns: 60px 1fr 36px;
+      grid-template-rows: auto auto;
+      gap: 8px 16px;
+      padding: 16px 0;
+    }
+    .archive-row:hover { padding-left: 8px; }
+    .archive-tech { grid-column: 2 / 3; justify-content: flex-start; }
+    .archive-link { grid-row: 1 / 3; }
+  }
+
+  /* ===== Reveal on scroll ===== */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <!-- Faviconを ./assets/favicon.svg (または .png) として配置してください -->
+      <img src="./assets/favicon.svg" alt="" class="nav-favicon" onerror="this.style.display='none'">
+      <span>YOUR<i class="dot">.</i>NAME</span>
+    </a>
+    <div class="nav-links">
+      <a href="#profile">Profile</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <!-- 写真は ./assets/desk.jpg に置いてください -->
+  <div class="hero-photo"></div>
+  <div class="hero-grad"></div>
+  <div class="hero-vignette"></div>
+  <div class="hero-tint"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-bar top"></div>
+  <div class="hero-bar bottom"></div>
+
+  <div class="hero-inner">
+    <span class="hero-eyebrow"><span class="line"></span>PORTFOLIO &mdash; 2026</span>
+    <h1>
+      Your Name
+      <span class="accent">Web Engineer — building thoughtful things on the web.</span>
+    </h1>
+    <p class="hero-tagline">
+      ものづくりが好きな Web エンジニアです。<br>
+      フロントエンドからバックエンドまで、丁寧に一つずつ。
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn btn-primary">See my projects →</a>
+      <a href="#contact" class="btn btn-ghost">Get in touch</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    SCROLL
+    <span class="v"></span>
+  </div>
+</header>
+
+<!-- ===== PROFILE ===== -->
+<section id="profile">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-num">— 01 —</span>
+      <h2 class="section-title">Profile</h2>
+      <p class="section-sub">A little about me.</p>
+    </div>
+    <div class="profile-grid reveal">
+      <div class="profile-visual">
+        <!-- Geminiで作ったアイコンを ./assets/avatar.png として配置してください。
+             丸枠で四隅がクリップされるので、右下のGeminiウォーターマークは自動的に隠れます。 -->
+        <img src="./assets/avatar.png" alt="Profile photo" onerror="this.style.display='none'">
+        <span class="initial">Y</span>
+      </div>
+      <div>
+        <div class="profile-meta">Web Engineer · Tokyo</div>
+        <h3 class="profile-name">Hello, I'm Your Name.</h3>
+        <p class="profile-bio">
+          ここに自己紹介テキストが入ります。経歴、強み、好きなものなど。
+          シンプルに 3〜5 行でまとめると読み手にとって心地よいバランスです。
+          技術の使い分けや、ものづくりへの姿勢など、人柄が伝わる一段落を心掛けます。
+        </p>
+        <div class="profile-facts">
+          <div><span class="fact-num">5+</span><div class="fact-label">Years of experience</div></div>
+          <div><span class="fact-num">20+</span><div class="fact-label">Projects shipped</div></div>
+          <div><span class="fact-num">∞</span><div class="fact-label">Cups of coffee</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SKILLS ===== -->
+<section id="skills">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-num">— 02 —</span>
+      <h2 class="section-title">Skills</h2>
+      <p class="section-sub">What I work with — 普段使っている技術スタックをカテゴリ別に。</p>
+    </div>
+
+    <div class="skills-grid reveal">
+      <div class="skill-card">
+        <div class="skill-card-head"><div class="skill-icon">◧</div><h3>Frontend</h3></div>
+        <div class="skill-tags">
+          <span class="skill-tag">HTML <span class="level">/ 5y</span></span>
+          <span class="skill-tag">CSS / Sass <span class="level">/ 5y</span></span>
+          <span class="skill-tag">JavaScript <span class="level">/ 4y</span></span>
+          <span class="skill-tag">TypeScript <span class="level">/ 2y</span></span>
+          <span class="skill-tag">React <span class="level">/ 2y</span></span>
+          <span class="skill-tag">Vue.js <span class="level">/ 1y</span></span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-head"><div class="skill-icon">◉</div><h3>Backend</h3></div>
+        <div class="skill-tags">
+          <span class="skill-tag">PHP / Laravel <span class="level">/ 3y</span></span>
+          <span class="skill-tag">Node.js <span class="level">/ 2y</span></span>
+          <span class="skill-tag">Python <span class="level">/ 1y</span></span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-head"><div class="skill-icon">▤</div><h3>Database & Infra</h3></div>
+        <div class="skill-tags">
+          <span class="skill-tag">MySQL <span class="level">/ 3y</span></span>
+          <span class="skill-tag">PostgreSQL <span class="level">/ 1y</span></span>
+          <span class="skill-tag">AWS (EC2/RDS/S3) <span class="level">/ 2y</span></span>
+          <span class="skill-tag">Docker <span class="level">/ 2y</span></span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-head"><div class="skill-icon">✦</div><h3>Tools</h3></div>
+        <div class="skill-tags">
+          <span class="skill-tag">Git / GitHub</span>
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">Slack</span>
+          <span class="skill-tag">Notion</span>
+          <span class="skill-tag">Postman</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WORKS ===== -->
+<section id="projects">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-num">— 03 —</span>
+      <h2 class="section-title">Projects</h2>
+      <p class="section-sub">Selected works — これまでに関わった/個人で作ったもの。</p>
+    </div>
+
+    <!-- ===== Featured (代表作 2件) ===== -->
+    <div class="featured-grid reveal">
+      <article class="work-card">
+        <div class="work-thumb">Project 01</div>
+        <div class="work-body">
+          <div class="work-meta"><span>2024</span><span>·</span><span>Personal</span></div>
+          <h3 class="work-title">Portfolio site</h3>
+          <p class="work-desc">自分用のポートフォリオサイト。ここに作品の概要を 1〜2 行で。</p>
+          <div class="work-stack"><span>Next.js</span><span>TypeScript</span><span>Tailwind</span></div>
+          <a href="#" class="work-link">View project ↗</a>
+        </div>
+      </article>
+
+      <article class="work-card">
+        <div class="work-thumb">Project 02</div>
+        <div class="work-body">
+          <div class="work-meta"><span>2023</span><span>·</span><span>Client</span></div>
+          <h3 class="work-title">Idea sharing app</h3>
+          <p class="work-desc">2 つの素材を組み合わせてアイデアを生むサービス。</p>
+          <div class="work-stack"><span>PHP</span><span>Laravel</span><span>MySQL</span></div>
+          <a href="#" class="work-link">View project ↗</a>
+        </div>
+      </article>
+    </div>
+
+    <!-- ===== Archive (全件1行ずつ) ===== -->
+    <div class="archive-head reveal">
+      <h3 class="archive-title">All projects</h3>
+      <span class="archive-count">12 projects</span>
+    </div>
+    <ul class="archive-list reveal">
+      <li>
+        <a href="#" class="archive-row">
+          <span class="archive-year">2024</span>
+          <div>
+            <h4 class="archive-name">Web scraper</h4>
+            <p class="archive-desc">Web サイトから情報を抽出する CLI スクリプト。</p>
+          </div>
+          <div class="archive-tech"><span>Python</span><span>BeautifulSoup</span></div>
+          <span class="archive-link">↗</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="archive-row">
+          <span class="archive-year">2024</span>
+          <div>
+            <h4 class="archive-name">Slack notification bot</h4>
+            <p class="archive-desc">定期的にチームへ進捗を投げる軽量ボット。</p>
+          </div>
+          <div class="archive-tech"><span>Node.js</span><span>Slack API</span></div>
+          <span class="archive-link">↗</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="archive-row">
+          <span class="archive-year">2023</span>
+          <div>
+            <h4 class="archive-name">Desktop tool</h4>
+            <p class="archive-desc">業務効率化のためのデスクトップアプリ。</p>
+          </div>
+          <div class="archive-tech"><span>Electron</span><span>React</span></div>
+          <span class="archive-link">↗</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="archive-row">
+          <span class="archive-year">2023</span>
+          <div>
+            <h4 class="archive-name">Markdown editor</h4>
+            <p class="archive-desc">プレビュー機能付きのシンプルなエディタ。</p>
+          </div>
+          <div class="archive-tech"><span>Vue.js</span><span>Vite</span></div>
+          <span class="archive-link">↗</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="archive-row">
+          <span class="archive-year">2022</span>
+          <div>
+            <h4 class="archive-name">Recipe finder</h4>
+            <p class="archive-desc">冷蔵庫の食材から料理を提案するアプリ。</p>
+          </div>
+          <div class="archive-tech"><span>Laravel</span><span>MySQL</span></div>
+          <span class="archive-link">↗</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="archive-row">
+          <span class="archive-year">2022</span>
+          <div>
+            <h4 class="archive-name">CSS animation studies</h4>
+            <p class="archive-desc">CodePen で公開した小さなアニメーション集。</p>
+          </div>
+          <div class="archive-tech"><span>HTML</span><span>CSS</span></div>
+          <span class="archive-link">↗</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="archive-more reveal">
+      <a href="#">View all on GitHub →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-num">— 04 —</span>
+      <h2 class="contact-title">Contact</h2>
+      <p class="contact-sub">Let's <em>talk</em> — お仕事のご相談・雑談、なんでもお気軽にどうぞ。</p>
+      <a href="mailto:hello@example.com" class="contact-email">✉ hello@example.com</a>
+      <div class="socials">
+        <a href="#" class="social" aria-label="X / Twitter">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="#" class="social" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </a>
+        <a href="#" class="social" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="#" class="social" aria-label="Note">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h6.5l8 11.5V3H21v18h-6L7 9.5V21H3V3z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 Your Name. Designed &amp; built with care.</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > window.innerHeight - 80);
+  });
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

@@ -1,7 +1,6 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,19 +9,45 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "rgb(var(--bg) / <alpha-value>)",
-        surface: "rgb(var(--surface) / <alpha-value>)",
-        "surface-2": "rgb(var(--surface-2) / <alpha-value>)",
-        border: "rgb(var(--border) / <alpha-value>)",
-        fg: "rgb(var(--fg) / <alpha-value>)",
-        "fg-muted": "rgb(var(--fg-muted) / <alpha-value>)",
-        "fg-subtle": "rgb(var(--fg-subtle) / <alpha-value>)",
-        accent: "rgb(var(--accent) / <alpha-value>)",
-        "accent-fg": "rgb(var(--accent-fg) / <alpha-value>)",
+        bg:            "var(--bg)",
+        surface:       "var(--surface)",
+        "surface-2":   "var(--surface-2)",
+        border:        "var(--border)",
+        text:          "var(--text)",
+        "text-mute":   "var(--text-mute)",
+        "text-soft":   "var(--text-soft)",
+        "accent-coral":  "var(--accent-coral)",
+        "accent-sage":   "var(--accent-sage)",
+        "accent-sky":    "var(--accent-sky)",
+        "accent-butter": "var(--accent-butter)",
       },
       fontFamily: {
-        sans: ["var(--font-sans-en)", "var(--font-sans-jp)", "sans-serif"],
+        sans: [
+          "var(--font-sans-jp)",
+          "var(--font-sans-en)",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Hiragino Kaku Gothic ProN",
+          "ヒラギノ角ゴ ProN W3",
+          "Yu Gothic Medium",
+          "游ゴシック Medium",
+          "YuGothic",
+          "Meiryo",
+          "sans-serif",
+        ],
         mono: ["var(--font-mono)", "monospace"],
+      },
+      maxWidth: {
+        content: "1120px",
+      },
+      boxShadow: {
+        md: "var(--shadow-md)",
+        lg: "var(--shadow-lg)",
+      },
+      borderRadius: {
+        "2xl": "16px",
+        "3xl": "24px",
+        "4xl": "32px",
       },
     },
   },
