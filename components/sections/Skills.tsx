@@ -1,31 +1,35 @@
 import type { IconType } from "react-icons";
 import {
-  SiHtml5, SiJavascript, SiTypescript, SiAngular, SiNextdotjs,
-  SiPython, SiNodedotjs,
-  SiPostgresql, SiDocker, SiLinux,
-  SiGit, SiFigma, SiSlack, SiNotion, SiPostman,
+  SiHtml5, SiCss, SiJavascript, SiTypescript, SiAngular, SiNextdotjs,
+  SiPython, SiDjango, SiNodedotjs,
+  SiPostgresql, SiLinux,
+  SiNginx,
+  SiGit, SiGithub, SiSlack, SiNotion, SiPostman, SiApache, SiClaude
 } from "react-icons/si";
-import { FaJava } from "react-icons/fa";
 import { Reveal } from "@/components/ui/Reveal";
 import { skills } from "@/lib/data";
 
 const techIcons: Record<string, { Icon: IconType; color: string }> = {
-  "HTML / CSS":      { Icon: SiHtml5,      color: "#E34F26" },
+  "HTML":            { Icon: SiHtml5,      color: "#E34F26" },
+  "CSS":             { Icon: SiCss,        color: "#1572B6" },
   "JavaScript":      { Icon: SiJavascript, color: "#F7DF1E" },
   "TypeScript":      { Icon: SiTypescript, color: "#3178C6" },
   "Angular":         { Icon: SiAngular,    color: "#DD0031" },
   "Next.js":         { Icon: SiNextdotjs,  color: "#000000" },
-  "Python / Django": { Icon: SiPython,     color: "#3776AB" },
-  "Java":            { Icon: FaJava,       color: "#007396" },
+  "Python":          { Icon: SiPython,     color: "#3776AB" },
+  "Django":          { Icon: SiDjango,     color: "#092E20" },
   "Node.js":         { Icon: SiNodedotjs,  color: "#339933" },
+  "Nginx":           { Icon: SiNginx,      color: "#009639" },
   "PostgreSQL":      { Icon: SiPostgresql, color: "#4169E1" },
-  "Docker":          { Icon: SiDocker,     color: "#2496ED" },
   "Linux":           { Icon: SiLinux,      color: "#FCC624" },
-  "Git / GitHub":    { Icon: SiGit,        color: "#F05032" },
-  "Figma":           { Icon: SiFigma,      color: "#F24E1E" },
+  "Git":             { Icon: SiGit,        color: "#F05032" },
+  "GitHub":          { Icon: SiGithub,     color: "#181717" },
   "Slack":           { Icon: SiSlack,      color: "#4A154B" },
   "Notion":          { Icon: SiNotion,     color: "#000000" },
   "Postman":         { Icon: SiPostman,    color: "#FF6C37" },
+  "Apache JMeter":   { Icon: SiApache,     color: "#D22128" },
+  "Claude Code":     { Icon: SiClaude,     color: "#D97757" },
+  "GitHub Copilot":  { Icon: SiGithub,     color: "#181717" },
 };
 
 const iconColors = [
