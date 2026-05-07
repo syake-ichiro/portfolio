@@ -4,7 +4,7 @@ import {
   SiPython, SiDjango, SiNodedotjs,
   SiPostgresql, SiLinux,
   SiNginx,
-  SiGit, SiGithub, SiSlack, SiNotion, SiPostman, SiApache, SiClaude
+  SiGit, SiGithub, SiGitlab, SiSlack, SiNotion, SiPostman, SiApache, SiClaude
 } from "react-icons/si";
 import { Reveal } from "@/components/ui/Reveal";
 import { skills } from "@/lib/data";
@@ -24,6 +24,7 @@ const techIcons: Record<string, { Icon: IconType; color: string }> = {
   "Linux":           { Icon: SiLinux,      color: "#FCC624" },
   "Git":             { Icon: SiGit,        color: "#F05032" },
   "GitHub":          { Icon: SiGithub,     color: "#181717" },
+  "GitLab":          { Icon: SiGitlab,     color: "#E24329" },
   "Slack":           { Icon: SiSlack,      color: "#4A154B" },
   "Notion":          { Icon: SiNotion,     color: "#000000" },
   "Postman":         { Icon: SiPostman,    color: "#FF6C37" },
@@ -59,7 +60,7 @@ export default function Skills() {
             Skills
           </h2>
           <p className="text-[var(--text-mute)] mt-4 text-[15px]">
-            What I work with — 普段使っている技術スタックをカテゴリ別に。
+            普段使っている技術スタックをカテゴリ別に紹介します。
           </p>
         </Reveal>
 

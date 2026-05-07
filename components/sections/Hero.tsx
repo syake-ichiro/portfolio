@@ -81,14 +81,13 @@ export default function Hero() {
         <h1 className="text-[clamp(56px,9vw,120px)] leading-[1.0] tracking-[-0.03em] font-bold mb-6">
           syake-ichiro
           <span className="block text-[clamp(20px,2.4vw,28px)] font-normal text-[rgba(245,237,224,.8)] tracking-[.02em] mt-4">
-            Web Engineer — building thoughtful things on the web.
+            生成 AI × Web 開発 — アイデアをプロダクトに。
           </span>
         </h1>
 
         <p className="text-[clamp(15px,1.6vw,17px)] text-[rgba(245,237,224,.72)] max-w-[520px] mb-12 leading-[1.8]">
-          ものづくりが好きな Web エンジニアです。
-          <br />
-          フロントエンドからバックエンドまで、丁寧に一つずつ。
+          Web アプリ・業務ツール・サイト制作、規模を問わず対応します。
+          設計から本番リリースまで、一気通貫で。
         </p>
 
         <div className="flex gap-[14px] flex-wrap items-center">
