@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function Hero() {
   return (
     <header
-      className="relative min-h-screen text-[#F5EDE0] overflow-hidden isolate"
+      className="relative min-h-svh text-[#F5EDE0] overflow-hidden isolate"
       aria-label="ヒーローセクション"
     >
       {/* 1) Photo — Ken Burns */}
@@ -69,7 +69,7 @@ export default function Hero() {
       />
 
       {/* 7) Text content */}
-      <div className="relative z-10 max-w-content mx-auto px-6 min-h-screen flex flex-col justify-center pt-[140px] pb-[120px]">
+      <div className="relative z-10 max-w-content mx-auto px-6 min-h-svh flex flex-col justify-center pt-[100px] pb-[80px] md:pt-[140px] md:pb-[120px]">
         <span className="inline-flex items-center gap-[10px] text-[12px] tracking-[.3em] uppercase text-[rgba(245,237,224,.75)] mb-6 font-medium">
           <span
             className="inline-block w-8 h-px bg-[rgba(245,237,224,.5)]"
@@ -108,7 +108,7 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <div
-        className="absolute right-6 bottom-[60px] z-10 flex items-center gap-3 text-[11px] tracking-[.25em] uppercase text-[rgba(245,237,224,.6)]"
+        className="absolute right-6 bottom-[40px] md:bottom-[60px] z-10 flex items-center gap-3 text-[11px] tracking-[.25em] uppercase text-[rgba(245,237,224,.6)] max-md:hidden"
         aria-hidden
       >
         SCROLL

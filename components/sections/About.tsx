@@ -6,12 +6,12 @@ export default function About() {
   return (
     <section
       id="profile"
-      className="py-[120px] px-6 bg-[var(--surface)]"
+      className="py-16 md:py-[120px] px-6 bg-[var(--surface)]"
       aria-labelledby="profile-heading"
     >
       <div className="max-w-content mx-auto">
         {/* Section header */}
-        <Reveal className="text-center mb-20">
+        <Reveal className="text-center mb-12 md:mb-20">
           <span className="block text-[var(--accent-coral)] text-[12px] tracking-[.25em] uppercase font-semibold mb-3">
             — 01 —
           </span>
@@ -72,7 +72,7 @@ export default function About() {
             </p>
 
             {/* Facts */}
-            <div className="grid grid-cols-3 gap-6 pt-8 border-t border-[var(--border)]">
+            <div className="grid grid-cols-3 gap-4 md:gap-6 pt-8 border-t border-[var(--border)]">
               {profile.facts.map((fact) => (
                 <div key={fact.label}>
                   <span className="block text-[32px] font-bold text-[var(--text)] leading-none">

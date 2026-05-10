@@ -12,6 +12,7 @@ const navLinks = [
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
@@ -51,13 +52,66 @@ export default function Header() {
           </span>
         </a>
 
-        {/* Nav links */}
-        <div className="flex gap-7 items-center max-md:gap-[18px]">
+        {/* Desktop nav links */}
+        <div className="hidden md:flex gap-7 items-center">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className={`nav-link relative text-[13px] max-md:text-[12px] font-medium transition-colors duration-[250ms] ${
+              className={`nav-link relative text-[13px] font-medium transition-colors duration-[250ms] ${
+                scrolled
+                  ? "text-[var(--text-mute)] hover:text-[var(--text)]"
+                  : "text-[rgba(255,255,255,0.75)] hover:text-white"
+              }`}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+
+        {/* Hamburger button — mobile only */}
+        <button
+          className={`md:hidden flex flex-col justify-center items-center w-10 h-10 gap-[5px] ${
+            scrolled ? "text-[var(--text)]" : "text-white"
+          }`}
+          onClick={() => setIsOpen((prev) => !prev)}
+          aria-label={isOpen ? "メニューを閉じる" : "メニューを開く"}
+        >
+          <span
+            className={`block w-5 h-px bg-current transition-transform duration-300 origin-center ${
+              isOpen ? "translate-y-[6px] rotate-45" : ""
+            }`}
+          />
+          <span
+            className={`block w-5 h-px bg-current transition-opacity duration-300 ${
+              isOpen ? "opacity-0" : ""
+            }`}
+          />
+          <span
+            className={`block w-5 h-px bg-current transition-transform duration-300 origin-center ${
+              isOpen ? "-translate-y-[6px] -rotate-45" : ""
+            }`}
+          />
+        </button>
+      </div>
+
+      {/* Mobile menu */}
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-300 ${
+          isOpen ? "max-h-64" : "max-h-0"
+        } ${
+          scrolled
+            ? "bg-[rgba(250,247,242,0.95)]"
+            : "bg-[rgba(10,10,12,0.85)]"
+        }`}
+      >
+        <div className="max-w-content mx-auto px-6 py-4 flex flex-col gap-4">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={() => setIsOpen(false)}
+              className={`text-[15px] font-medium transition-colors duration-[250ms] ${
                 scrolled
                   ? "text-[var(--text-mute)] hover:text-[var(--text)]"
                   : "text-[rgba(255,255,255,0.75)] hover:text-white"
