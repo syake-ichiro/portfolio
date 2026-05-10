@@ -44,12 +44,12 @@ export default function Skills() {
   return (
     <section
       id="skills"
-      className="py-[120px] px-6 bg-[var(--bg)]"
+      className="py-16 md:py-[120px] px-6 bg-[var(--bg)]"
       aria-labelledby="skills-heading"
     >
       <div className="max-w-content mx-auto">
         {/* Section header */}
-        <Reveal className="text-center mb-20">
+        <Reveal className="text-center mb-12 md:mb-20">
           <span className="block text-[var(--accent-coral)] text-[12px] tracking-[.25em] uppercase font-semibold mb-3">
             — 02 —
           </span>

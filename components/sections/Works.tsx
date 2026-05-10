@@ -10,12 +10,12 @@ export default function Works() {
   return (
     <section
       id="projects"
-      className="py-[120px] px-6 bg-[var(--surface)]"
+      className="py-16 md:py-[120px] px-6 bg-[var(--surface)]"
       aria-labelledby="projects-heading"
     >
       <div className="max-w-content mx-auto">
         {/* Section header */}
-        <Reveal className="text-center mb-20">
+        <Reveal className="text-center mb-12 md:mb-20">
           <span className="block text-[var(--accent-coral)] text-[12px] tracking-[.25em] uppercase font-semibold mb-3">
             — 03 —
           </span>
@@ -31,7 +31,7 @@ export default function Works() {
         </Reveal>
 
         {/* Featured: 2 large cards */}
-        <Reveal className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-[100px]">
+        <Reveal className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 md:mb-[100px]">
           {featuredProjects.map((project, i) => (
             <article
               key={project.title}
@@ -98,11 +98,7 @@ export default function Works() {
               <li key={project.name}>
                 <a
                   href={project.link ?? "#"}
-                  className="archive-row group grid items-center border-b border-[var(--border)] py-[22px] px-3 no-underline text-inherit max-md:grid-cols-[60px_1fr_36px] max-md:gap-x-4 max-md:gap-y-2"
-                  style={{
-                    gridTemplateColumns: "72px 1fr auto 36px",
-                    gap: "24px",
-                  }}
+                  className="archive-row group grid items-center border-b border-[var(--border)] py-[22px] px-3 no-underline text-inherit grid-cols-[60px_1fr_36px] gap-x-4 gap-y-2 md:grid-cols-[72px_1fr_auto_36px] md:gap-6"
                 >
                   <span className="text-[13px] text-[var(--text-mute)] tabular-nums tracking-[.05em]">
                     {project.year}

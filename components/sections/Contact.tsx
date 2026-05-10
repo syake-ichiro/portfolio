@@ -22,7 +22,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="py-[160px] px-6 text-center bg-[var(--bg)]"
+      className="py-16 md:py-[160px] px-6 text-center bg-[var(--bg)]"
       aria-labelledby="contact-heading"
     >
       <div className="max-w-content mx-auto">
@@ -42,7 +42,7 @@ export default function Contact() {
 
           <a
             href={`mailto:${contactEmail}`}
-            className="inline-flex items-center gap-[10px] px-9 py-[18px] bg-[var(--text)] text-[var(--bg)] rounded-full font-semibold text-[15px] mb-14 transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+            className="inline-flex items-center gap-[10px] px-6 md:px-9 py-[18px] bg-[var(--text)] text-[var(--bg)] rounded-full font-semibold text-[13px] md:text-[15px] mb-10 md:mb-14 transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-lg break-all"
           >
             ✉ {contactEmail}
           </a>
